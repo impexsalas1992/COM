@@ -1,105 +1,81 @@
-# Control de Ventas & Gastos con IA (AGRICARL PERU)
+# 📊 Control de Ventas & Gastos con IA (SALAS IMPORTACIONES & EXPORTACIONES S.A.C.)
 
-Aplicación web integral para el registro, control fiscal y gestión financiera de comprobantes de ventas, compras/gastos con escáner IA Gemini, decodificador SUNAT QR, integración con Google Sheets/Drive y reportes ejecutivos.
-
----
-
-## 🚀 Opciones de Exportación y Despliegue (Hosting)
-
-### 1. Exportar el Código desde Google AI Studio
-1. En la barra superior derecha de Google AI Studio, haz clic en el menú de **Opciones / Ajustes** o el botón **Export**.
-2. Puedes elegir:
-   - **Export to GitHub**: Para clonar o sincronizar directamente con un repositorio de GitHub.
-   - **Download as ZIP**: Para descargar todos los archivos del proyecto a tu computadora en un archivo comprimido.
+Sistema integral y moderno de gestión financiera, escaneo inteligente de comprobantes (Facturas, Boletas, Honorarios), decodificación QR SUNAT, reportes ejecutivos e integración bidireccional en tiempo real con **Google Sheets** y **Google Drive**.
 
 ---
 
-## 🛠️ Ejecución Local
+## 🌐 Publicación Fácil y Rápida (Hosting)
+
+### 🚀 Opción 1: GitHub Pages (100% Automático con GitHub Actions)
+Este repositorio ya cuenta con el flujo automatizado configurado en `.github/workflows/deploy.yml` y rutas relativas en `vite.config.ts`.
+
+1. **Sube o sincroniza tus cambios a GitHub**:
+   - Haz clic en **Export to GitHub** desde Google AI Studio, o haz `git push origin main`.
+2. **Activa GitHub Pages en tu repositorio**:
+   - En tu repositorio de GitHub, ve a **Settings** (Ajustes) > **Pages** (en el menú lateral izquierdo).
+   - En **Build and deployment** > **Source**, selecciona **`GitHub Actions`**.
+3. ¡Listo! Cada vez que subas cambios a `main`, GitHub compilará y publicará tu web automáticamente en:
+   `https://<tu-usuario>.github.io/<tu-repositorio>/`
+
+---
+
+### ⚡ Opción 2: Vercel o Netlify (Gratis y en 1 Clic)
+1. Conecta tu cuenta de GitHub a [Vercel](https://vercel.com) o [Netlify](https://netlify.com).
+2. Selecciona este repositorio.
+3. Configuración del proyecto:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build:client` (o `npm run build`)
+   - **Output Directory**: `dist`
+4. Haz clic en **Deploy**.
+
+---
+
+### 🖥️ Opción 3: Render / Railway / Servidor Full-Stack
+Si deseas hospedar también el servidor Node.js/Express incluido:
+1. En [Render.com](https://render.com), crea un **Web Service**.
+2. Conecta el repositorio de GitHub.
+3. Configura:
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+4. En **Environment Variables**, añade:
+   - `GEMINI_API_KEY`: Tu clave de Google AI Studio / Gemini.
+   - `NODE_ENV`: `production`
+
+---
+
+## 🛠️ Ejecución Local en tu Computadora
 
 ```bash
-# 1. Instalar dependencias
+# 1. Clonar el repositorio
+git clone <URL_DE_TU_REPOSITORIO>
+cd <CARPETA>
+
+# 2. Instalar dependencias
 npm install
 
-# 2. Configurar variables de entorno (crear .env a partir de .env.example)
-cp .env.example .env
-# Añade tu GEMINI_API_KEY en el archivo .env
-
-# 3. Iniciar en modo desarrollo
+# 3. Iniciar el servidor local de desarrollo
 npm run dev
 
 # 4. Compilar para producción
 npm run build
-
-# 5. Iniciar servidor de producción
-npm start
 ```
 
 ---
 
-## 🌐 Guías para Hospedar (Hosting)
+## 📁 Estructura del Proyecto
 
-### Opción A: Render (Recomendado - Gratis / Bajo Costo)
-1. Sube tu proyecto a GitHub.
-2. Ingresa a [render.com](https://render.com) y crea un **Web Service**.
-3. Conecta tu repositorio de GitHub.
-4. Configura:
-   - **Environment**: `Node`
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-5. En la sección **Environment Variables**, añade:
-   - `GEMINI_API_KEY` = Tu API Key de Google Gemini
-   - `NODE_ENV` = `production`
-6. Haz clic en **Create Web Service**.
-
----
-
-### Opción B: Railway
-1. Ingresa a [railway.app](https://railway.app) y haz clic en **New Project** -> **Deploy from GitHub repo**.
-2. Railway detectará automáticamente el archivo `Dockerfile` o `package.json`.
-3. En la pestaña **Variables**, añade `GEMINI_API_KEY`.
-4. Railway generará un dominio HTTPS listo para usar.
-
----
-
-### Opción C: Google Cloud Run (o cualquier servicio Docker)
-La aplicación incluye un `Dockerfile` optimizado y multi-etapa:
-
-```bash
-# Construir la imagen Docker
-docker build -t control-ventas-gastos:latest .
-
-# Ejecutar el contenedor localmente o en tu servidor
-docker run -d -p 3000:3000 -e GEMINI_API_KEY="tu_api_key" control-ventas-gastos:latest
+```text
+├── .github/workflows/deploy.yml  # Automatización de despliegue a GitHub Pages
+├── src/                          # Código fuente React + TypeScript + Tailwind
+│   ├── components/               # Módulos (Ventas, Gastos, Reportes, Dashboard, Modales)
+│   ├── types/                    # Tipos e interfaces TypeScript
+│   ├── utils/                    # Servicios IA Gemini, sincronización Google Sheets & Storage
+│   ├── App.tsx                   # Componente principal de la aplicación
+│   ├── main.tsx                  # Punto de entrada de React
+│   └── index.css                 # Estilos Tailwind CSS y temas de color
+├── index.html                    # Entrada HTML principal
+├── package.json                  # Dependencias y scripts de construcción
+├── server.ts                     # Servidor backend Express + proxies
+├── vite.config.ts                # Configuración de compilación Vite (base: './')
+└── metadata.json                 # Metadatos del proyecto
 ```
-
----
-
-### Opción D: Servidor VPS Propio (Ubuntu / Debian / Nginx)
-1. Clona el repositorio en tu servidor.
-2. Instala Node.js 20+: `npm install && npm run build`.
-3. Usa PM2 para mantenerlo siempre activo:
-   ```bash
-   npm install -g pm2
-   pm2 start dist/server.cjs --name "ventas-gastos-app"
-   pm2 save
-   pm2 startup
-   ```
-4. Configura Nginx como proxy inverso hacia `http://localhost:3000`.
-
----
-
-## 🔑 Variables de Entorno
-
-| Variable | Descripción | Requerido |
-| :--- | :--- | :--- |
-| `GEMINI_API_KEY` | Clave API de Google AI Studio / Gemini para análisis de comprobantes e informes | Sí |
-| `PORT` | Puerto de escucha del servidor (por defecto 3000) | No |
-| `NODE_ENV` | Entorno de ejecución (`development` o `production`) | No |
-
----
-
-## ✨ Características Principales
-- 🧾 **Escaneo Inteligente de Comprobantes**: Extracción automática con IA de Facturas, Boletas, Notas y Recibos por Honorarios.
-- 📊 **Cálculo Tributario SUNAT**: Débito fiscal, crédito fiscal, IGV por pagar y detracciones.
-- 📂 **Sincronización con Google Sheets & Drive**: Respaldo bidireccional en tiempo real.
-- 📱 **Diseño Adaptativo**: Vistas optimizadas para PC, Tabletas y Teléfonos Móviles.
